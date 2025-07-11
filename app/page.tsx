@@ -1,103 +1,217 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
+import { useEffect, useRef, useState } from 'react'
+import { useScroll, useTransform, motion } from 'framer-motion'
+import Hero from '@/components/Hero'
+import Features from '@/components/Features'
+
+function useRandomParticles(count: number) {
+  const [particles, setParticles] = useState<any[]>([])
+
+  useEffect(() => {
+    const generated = [...Array(count)].map(() => ({
+      width: Math.random() * 20 + 10,
+      height: Math.random() * 20 + 10,
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      x: (Math.random() - 0.5) * 50,
+      y: (Math.random() - 0.5) * 50,
+      duration: Math.random() * 10 + 5
+    }))
+    setParticles(generated)
+  }, [count])
+
+  return particles
+}
+
+function useRandomFruits(count: number) {
+  const [fruits, setFruits] = useState<any[]>([])
+
+  useEffect(() => {
+    const generated = [...Array(count)].map((_, i) => ({
+      left: `${10 + i * 15}%`,
+      top: `${20 + Math.random() * 60}%`,
+      duration: 4 + Math.random() * 3,
+      delay: i * 0.5
+    }))
+    setFruits(generated)
+  }, [count])
+
+  return fruits
+}
+
+export default function HomePage() {
+  const containerRef = useRef(null)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ['start start', 'end end']
+  })
+
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.03])
+  const y = useTransform(scrollYProgress, [0, 1], [0, -80])
+
+  const particles = useRandomParticles(15)
+  const fruits = useRandomFruits(5)
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <motion.main 
+      ref={containerRef}
+      className="bg-white text-gray-800 overflow-hidden"
+      style={{ scale }}
+    >
+      <Hero />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* SECTION: Manfaat */}
+      <motion.section 
+        id="features" 
+        className="py-32 bg-[#f1f5f9] relative"
+        style={{ y }}
+      >
+        <div className="absolute inset-0 overflow-hidden">
+          <motion.div 
+            className="absolute -right-20 -top-20 w-96 h-96 rounded-full bg-[#55A630]/10 blur-3xl"
+            animate={{ scale: [0.8, 1] }}
+            transition={{ 
+              duration: 10,
+              repeat: Infinity,
+              repeatType: "reverse"
+            }}
+          />
+          <motion.div 
+            className="absolute left-10 bottom-10 w-80 h-80 rounded-full bg-[#8CCF42]/10 blur-3xl"
+            animate={{ scale: [0.7, 0.9] }}
+            transition={{ 
+              duration: 8,
+              repeat: Infinity,
+              repeatType: "reverse",
+              delay: 1
+            }}
+          />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+        
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <Features />
+        </div>
+      </motion.section>
+
+      {/* SECTION: CTA */}
+      <section
+        id="cta"
+        className="relative isolate py-32 bg-gradient-to-tr from-[#55A630] via-[#8CCF42] to-[#C8EE9E] text-white overflow-hidden"
+      >
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute inset-0 bg-[url('/images/fruit-bg.svg')] bg-cover bg-right-top opacity-5 pointer-events-none" />
+
+          {/* Floating particles */}
+          {particles.map((p, i) => (
+            <motion.div
+              key={`particle-${i}`}
+              className="absolute rounded-full bg-white/10"
+              style={{
+                width: p.width,
+                height: p.height,
+                left: p.left,
+                top: p.top,
+              }}
+              animate={{
+                x: [0, p.x],
+                y: [0, p.y],
+                opacity: [0.1, 0.3, 0.1],
+              }}
+              transition={{
+                duration: p.duration,
+                repeat: Infinity,
+                repeatType: "reverse",
+                ease: "easeInOut",
+              }}
+            />
+          ))}
+
+          {/* Floating fruits */}
+          {fruits.map((f, i) => (
+            <motion.div
+              key={`fruit-${i}`}
+              className="absolute"
+              style={{
+                left: f.left,
+                top: f.top,
+              }}
+              animate={{
+                y: [0, -20, 0],
+                rotate: [0, 5, 0]
+              }}
+              transition={{
+                duration: f.duration,
+                repeat: Infinity,
+                delay: f.delay
+              }}
+            >
+              <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg">
+                <div className="w-10 h-10 rounded-full bg-white/30" />
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div 
+          className="max-w-3xl mx-auto px-6 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, type: "spring" }}
+          viewport={{ once: true, margin: "-100px" }}
         >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+          <motion.h2 
+            className="text-5xl font-extrabold tracking-tight mb-6 drop-shadow-sm"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            Jaga Kesegaran <motion.span 
+              className="text-[#E9F5DB] inline-block"
+              animate={{ rotate: [0, 3, -3, 0] }}
+              transition={{ duration: 4, repeat: Infinity }}
+            >Buah</motion.span> Anda
+          </motion.h2>
+          
+          <motion.p 
+            className="text-xl leading-relaxed mb-10 text-white/90"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+          >
+            Ethylene absorber dari Dickson Synergy menjaga buah tetap segar selama distribusi dan ekspor.
+            Efektif, aman, dan ramah lingkungan.
+          </motion.p>
+          
+          <motion.a
+            href="/kontak"
+            className="inline-block rounded-full bg-white text-primary font-semibold px-8 py-4 text-lg shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden group"
+            whileHover={{ 
+              scale: 1.05,
+              boxShadow: "0 10px 25px rgba(0,0,0,0.1)"
+            }}
+            whileTap={{ scale: 0.98 }}
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+          >
+            <span className="relative text-green-600 z-10 font-bold">Hubungi Kami</span>
+            <span className="absolute inset-0 bg-gradient-to-r from-[#55A630]/10 to-[#8CCF42]/10 opacity-0 group-hover:opacity-100 transition duration-500" />
+            
+            <motion.span 
+              className="absolute inset-0 rounded-full border-2 border-white/30"
+              animate={{
+                scale: [1, 1.05, 1],
+                opacity: [0.5, 1, 0.5]
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity
+              }}
+            />
+          </motion.a>
+        </motion.div>
+      </section>
+    </motion.main>
+  )
 }
