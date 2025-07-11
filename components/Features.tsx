@@ -55,7 +55,8 @@ const features = [
   }
 ]
 
-const FeatureCard = ({ feature, index }: { feature: typeof features[0], index: number }) => {
+// ✅ Hapus index jika tidak digunakan
+const FeatureCard = ({ feature }: { feature: typeof features[0] }) => {
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -92,7 +93,6 @@ const FeatureCard = ({ feature, index }: { feature: typeof features[0], index: n
       
       {/* Main card */}
       <div className="relative z-10 h-full bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 group-hover:shadow-xl transition-all duration-500">
-        {/* Header section */}
         <div className="p-8 pb-0">
           <motion.div 
             className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-6"
@@ -121,7 +121,6 @@ const FeatureCard = ({ feature, index }: { feature: typeof features[0], index: n
           </p>
         </div>
         
-        {/* Stats bar */}
         <div 
           className="px-8 py-4 bg-gradient-to-r from-white to-gray-50 border-t border-gray-100"
           style={{ borderBottomColor: `${feature.color}30` }}
@@ -143,7 +142,6 @@ const FeatureCard = ({ feature, index }: { feature: typeof features[0], index: n
           </motion.div>
         </div>
         
-        {/* Animated underline */}
         <motion.div
           className="h-1 w-full"
           style={{ backgroundColor: feature.color }}
@@ -208,7 +206,7 @@ export default function Features() {
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {features.map((feature, index) => (
-          <FeatureCard key={index} feature={feature} index={index} />
+          <FeatureCard key={index} feature={feature} />
         ))}
       </div>
 
@@ -221,14 +219,8 @@ export default function Features() {
       >
         <motion.div
           className="inline-flex items-center bg-gradient-to-r from-[#55A630] via-[#4CAF50] to-[#8BC34A] text-white px-8 py-4 rounded-full shadow-xl"
-          animate={{ 
-            backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] 
-          }}
-          transition={{ 
-            duration: 4, 
-            repeat: Infinity,
-            repeatType: "reverse"
-          }}
+          animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
+          transition={{ duration: 4, repeat: Infinity, repeatType: 'reverse' }}
         >
           <Zap className="mr-3 animate-pulse" size={24} />
           <span className="text-lg font-bold tracking-wide">TECHNOLOGY OF THE YEAR 2024</span>

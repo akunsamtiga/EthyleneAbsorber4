@@ -5,18 +5,35 @@ import { useScroll, useTransform, motion } from 'framer-motion'
 import Hero from '@/components/Hero'
 import Features from '@/components/Features'
 
+interface Particle {
+  width: number
+  height: number
+  left: string
+  top: string
+  x: number
+  y: number
+  duration: number
+}
+
+interface Fruit {
+  left: string
+  top: string
+  duration: number
+  delay: number
+}
+
 function useRandomParticles(count: number) {
-  const [particles, setParticles] = useState<any[]>([])
+  const [particles, setParticles] = useState<Particle[]>([])
 
   useEffect(() => {
-    const generated = [...Array(count)].map(() => ({
+    const generated: Particle[] = [...Array(count)].map(() => ({
       width: Math.random() * 20 + 10,
       height: Math.random() * 20 + 10,
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`,
       x: (Math.random() - 0.5) * 50,
       y: (Math.random() - 0.5) * 50,
-      duration: Math.random() * 10 + 5
+      duration: Math.random() * 10 + 5,
     }))
     setParticles(generated)
   }, [count])
@@ -25,14 +42,14 @@ function useRandomParticles(count: number) {
 }
 
 function useRandomFruits(count: number) {
-  const [fruits, setFruits] = useState<any[]>([])
+  const [fruits, setFruits] = useState<Fruit[]>([])
 
   useEffect(() => {
-    const generated = [...Array(count)].map((_, i) => ({
+    const generated: Fruit[] = [...Array(count)].map((_, i) => ({
       left: `${10 + i * 15}%`,
       top: `${20 + Math.random() * 60}%`,
       duration: 4 + Math.random() * 3,
-      delay: i * 0.5
+      delay: i * 0.5,
     }))
     setFruits(generated)
   }, [count])

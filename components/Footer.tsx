@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { 
   Phone, Mail, MapPin, 
-  Facebook, Twitter, Instagram, Linkedin, Globe 
+  Facebook, Twitter, Instagram, Linkedin 
 } from 'lucide-react'
 
 export default function Footer() {

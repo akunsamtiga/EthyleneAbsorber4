@@ -5,12 +5,28 @@ import { useRef, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { ShieldCheck, Globe } from 'lucide-react'
 
-// Helper hooks to generate random data only on client
-function useRandomDecorations(count: number) {
-  const [items, setItems] = useState<any[]>([])
+// ✅ Type Definitions
+type Decoration = {
+  width: number
+  height: number
+  left: string
+  top: string
+  x: number
+  y: number
+  duration: number
+}
+
+type Dot = {
+  left: string
+  top: string
+}
+
+// ✅ Helper hooks
+function useRandomDecorations(count: number): Decoration[] {
+  const [items, setItems] = useState<Decoration[]>([])
 
   useEffect(() => {
-    const generated = [...Array(count)].map(() => ({
+    const generated: Decoration[] = [...Array(count)].map(() => ({
       width: Math.random() * 300 + 100,
       height: Math.random() * 300 + 100,
       left: `${Math.random() * 100}%`,
@@ -25,11 +41,11 @@ function useRandomDecorations(count: number) {
   return items
 }
 
-function useRandomDots(count: number) {
-  const [dots, setDots] = useState<any[]>([])
+function useRandomDots(count: number): Dot[] {
+  const [dots, setDots] = useState<Dot[]>([])
 
   useEffect(() => {
-    const generated = [...Array(count)].map(() => ({
+    const generated: Dot[] = [...Array(count)].map(() => ({
       left: `${Math.random() * 100}%`,
       top: `${Math.random() * 100}%`
     }))
@@ -43,7 +59,7 @@ export default function Hero() {
   const ref = useRef(null)
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start start", "end start"]
+    offset: ['start start', 'end start']
   })
 
   const y = useTransform(scrollYProgress, [0, 1], [0, 150])
@@ -58,7 +74,7 @@ export default function Hero() {
       className="relative h-screen min-h-[800px] overflow-hidden bg-gradient-to-br from-white to-[#F1F5F9] flex items-center"
     >
       {/* Animated gradient background */}
-      <motion.div 
+      <motion.div
         className="absolute inset-0"
         animate={{
           background: [
@@ -70,7 +86,7 @@ export default function Hero() {
         transition={{
           duration: 8,
           repeat: Infinity,
-          repeatType: "reverse"
+          repeatType: 'reverse'
         }}
       />
 
@@ -84,7 +100,7 @@ export default function Hero() {
               width: item.width,
               height: item.height,
               left: item.left,
-              top: item.top,
+              top: item.top
             }}
             animate={{
               x: [0, item.x],
@@ -94,13 +110,14 @@ export default function Hero() {
             transition={{
               duration: item.duration,
               repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut",
+              repeatType: 'reverse',
+              ease: 'easeInOut'
             }}
           />
         ))}
       </div>
 
+      {/* Main content */}
       <div className="max-w-7xl mx-auto px-4 w-full z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <motion.div className="relative z-10" style={{ y, opacity }}>
@@ -109,16 +126,14 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <motion.h1
-                className="text-5xl sm:text-6xl md:text-7xl font-bold text-gray-900 leading-tight mb-6"
-              >
+              <motion.h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-gray-900 leading-tight mb-6">
                 <motion.span
                   className="block bg-clip-text text-transparent bg-gradient-to-r from-[#55A630] to-[#8CCF42]"
                   animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
                   transition={{
                     duration: 6,
                     repeat: Infinity,
-                    repeatType: "reverse"
+                    repeatType: 'reverse'
                   }}
                 >
                   Solusi Segar
@@ -135,7 +150,7 @@ export default function Hero() {
                 transition={{ delay: 0.4 }}
                 className="text-lg sm:text-xl text-gray-600 max-w-xl mb-8"
               >
-                Ethylene absorber premium kami menjaga kesegaran buah selama distribusi. 
+                Ethylene absorber premium kami menjaga kesegaran buah selama distribusi.
                 Teknologi mutakhir dengan desain elegan.
               </motion.p>
 
@@ -147,9 +162,9 @@ export default function Hero() {
               >
                 <motion.a
                   href="/produk"
-                  whileHover={{ 
+                  whileHover={{
                     scale: 1.05,
-                    boxShadow: "0 10px 25px -5px rgba(85, 166, 48, 0.4)"
+                    boxShadow: '0 10px 25px -5px rgba(85, 166, 48, 0.4)'
                   }}
                   whileTap={{ scale: 0.95 }}
                   className="inline-block rounded-full bg-gradient-to-r from-[#55A630] to-[#8CCF42] text-white font-semibold px-6 py-3 text-base shadow-lg hover:shadow-xl transition-all duration-300 relative overflow-hidden group"
@@ -166,7 +181,7 @@ export default function Hero() {
                         width: 8,
                         height: 8,
                         left: dot.left,
-                        top: dot.top,
+                        top: dot.top
                       }}
                       animate={{
                         scale: [0, 1, 0],
@@ -213,7 +228,7 @@ export default function Hero() {
                   <div className="relative h-full w-full flex items-center justify-center">
                     <motion.div
                       animate={{ rotate: [0, 2, -2, 0], y: [0, -10, 0] }}
-                      transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+                      transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
                     >
                       <Image
                         src="/images/fruit-sachet.webp"
