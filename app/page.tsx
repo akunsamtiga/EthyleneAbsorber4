@@ -171,63 +171,34 @@ export default function HomePage() {
         </div>
 
         <motion.div 
-          className="max-w-3xl mx-auto px-6 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, type: "spring" }}
-          viewport={{ once: true, margin: "-100px" }}
-        >
-          <motion.h2 
-            className="text-5xl font-extrabold tracking-tight mb-6 drop-shadow-sm"
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-          >
-            Jaga Kesegaran <motion.span 
-              className="text-[#E9F5DB] inline-block"
-              animate={{ rotate: [0, 3, -3, 0] }}
-              transition={{ duration: 4, repeat: Infinity }}
-            >Buah</motion.span> Anda
-          </motion.h2>
-          
-          <motion.p 
-            className="text-xl leading-relaxed mb-10 text-white/90"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-          >
-            Ethylene absorber dari Dickson Synergy menjaga buah tetap segar selama distribusi dan ekspor.
-            Efektif, aman, dan ramah lingkungan.
-          </motion.p>
-          
-          <motion.a
-            href="/kontak"
-            className="inline-block rounded-full bg-white text-primary font-semibold px-8 py-4 text-lg shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden group"
-            whileHover={{ 
-              scale: 1.05,
-              boxShadow: "0 10px 25px rgba(0,0,0,0.1)"
-            }}
-            whileTap={{ scale: 0.98 }}
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-          >
-            <span className="relative text-green-600 z-10 font-bold">Hubungi Kami</span>
-            <span className="absolute inset-0 bg-gradient-to-r from-[#55A630]/10 to-[#8CCF42]/10 opacity-0 group-hover:opacity-100 transition duration-500" />
-            
-            <motion.span 
-              className="absolute inset-0 rounded-full border-2 border-white/30"
-              animate={{
-                scale: [1, 1.05, 1],
-                opacity: [0.5, 1, 0.5]
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity
-              }}
-            />
-          </motion.a>
-        </motion.div>
+  className="max-w-3xl mx-auto px-6 text-center"
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  transition={{ duration: 0.8, ease: "easeOut" }}
+  viewport={{ once: true, amount: 0.3 }}
+>
+  <h2 className="text-5xl font-extrabold tracking-tight mb-6 drop-shadow-sm">
+    Jaga Kesegaran <span className="text-[#E9F5DB] inline-block">Buah</span> Anda
+  </h2>
+
+  <p className="text-xl leading-relaxed mb-10 text-white/90">
+    Ethylene absorber dari Dickson Synergy menjaga buah tetap segar selama distribusi dan ekspor.
+    Efektif, aman, dan ramah lingkungan.
+  </p>
+
+  <a
+    href="/kontak"
+    className="inline-block rounded-full bg-white text-primary font-semibold px-8 py-4 text-lg shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden group"
+  >
+    <span className="relative text-green-600 z-10 font-bold">Hubungi Kami</span>
+    <span className="absolute inset-0 bg-gradient-to-r from-[#55A630]/10 to-[#8CCF42]/10 opacity-0 group-hover:opacity-100 transition duration-500" />
+
+    <span 
+      className="absolute inset-0 rounded-full border-2 border-white/30 animate-pulse"
+    />
+  </a>
+</motion.div>
+
       </section>
     </motion.main>
   )
