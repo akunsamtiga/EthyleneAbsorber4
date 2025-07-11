@@ -10,7 +10,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="id" className="scroll-smooth">
-      <body className="antialiased bg-white text-gray-800 selection:bg-lime-200 selection:text-black">
+      <body className="antialiased bg-white text-gray-800 selection:bg-lime-200 selection:text-black overflow-x-hidden max-w-[100vw]">
         <Navbar />
         <main>{children}</main>
         <Footer />
@@ -18,3 +18,4 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   )
 }
+
