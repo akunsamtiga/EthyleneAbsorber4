@@ -61,7 +61,7 @@ export default function HomePage() {
   const containerRef = useRef(null)
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start start', 'end end']
+    offset: ['start start', 'end end'],
   })
 
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.03])
@@ -71,25 +71,62 @@ export default function HomePage() {
   const fruits = useRandomFruits(5)
 
   return (
-    <motion.main 
+    <motion.main
       ref={containerRef}
-      className="bg-white text-gray-800 overflow-hidden"
+      className="bg-white text-gray-800 overflow-hidden relative"
       style={{ scale }}
     >
       <Hero />
 
       {/* SECTION: Manfaat */}
-      <motion.section 
-        id="features" 
-        className="pt-10 pb-0 bg-white relative"
+      <motion.section
+        id="features"
+        className="pt-10 pb-0 bg-white relative overflow-hidden"
         style={{ y }}
-      > 
+      >
+        {/* Floating particles */}
+        {particles.map((p, i) => (
+          <motion.div
+            key={`particle-${i}`}
+            className="bg-green-200/50 rounded-full absolute z-0"
+            style={{
+              width: p.width,
+              height: p.height,
+              left: p.left,
+              top: p.top,
+            }}
+            animate={{ x: p.x, y: p.y }}
+            transition={{
+              duration: p.duration,
+              repeat: Infinity,
+              repeatType: 'mirror',
+            }}
+          />
+        ))}
+
+        {/* Floating fruits */}
+        {fruits.map((f, i) => (
+          <motion.div
+            key={`fruit-${i}`}
+            className="w-4 h-4 bg-[#198754] rounded-full absolute z-0"
+            style={{
+              left: f.left,
+              top: f.top,
+            }}
+            animate={{ y: [-10, 10] }}
+            transition={{
+              duration: f.duration,
+              delay: f.delay,
+              repeat: Infinity,
+              repeatType: 'mirror',
+            }}
+          />
+        ))}
+
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <Features />
         </div>
       </motion.section>
-
-  
     </motion.main>
   )
 }
