@@ -33,13 +33,15 @@ export default function Navbar() {
 
   return (
     <motion.header
-      className={`fixed top-0 inset-x-0 z-50 backdrop-blur-md transition-all duration-300 ${scrolled ? 'bg-white/90 shadow-sm' : 'bg-white/70'}`}
+      className={`fixed top-0 inset-x-0 z-50 backdrop-blur-md transition-all duration-300 ${
+        scrolled ? 'bg-white/90 shadow-sm' : 'bg-white/70'
+      }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: 'easeOut' }}
     >
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-        {/* Logo with animation */}
+        {/* Logo */}
         <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Link href="/" className="flex items-center gap-2">
             <div className="w-10 h-10 bg-gradient-to-r from-[#55A630] to-[#8CCF42] rounded-lg flex items-center justify-center">
@@ -47,7 +49,7 @@ export default function Navbar() {
                 animate={{ rotate: [0, 15, -15, 0] }}
                 transition={{ duration: 4, repeat: Infinity }}
               >
-                <LeafIcon className="text-white w-5 h-5" />
+                <LeafIcon className="text-white" />
               </motion.div>
             </div>
             <span className="text-xl font-bold text-[#55A630] tracking-tight">
@@ -56,9 +58,10 @@ export default function Navbar() {
           </Link>
         </motion.div>
 
-        {/* Desktop Navigation */}
+        {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8 text-base">
-          <NavLink href="/" label="Beranda" />
+          <NavLink href="/">Beranda</NavLink>
+
           <div
             className="relative"
             ref={dropdownRef}
@@ -83,37 +86,30 @@ export default function Navbar() {
                   transition={{ duration: 0.2 }}
                 >
                   <div className="py-2">
-                    <Link
+                    <ProductItem
                       href="/produk/ethylene-absorber"
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition"
-                    >
-                      <ShoppingBag size={18} className="text-[#55A630]" />
-                      <div>
-                        <div className="font-medium">Ethylene Absorber</div>
-                        <div className="text-sm text-gray-500 mt-1">Penyerap etilen premium</div>
-                      </div>
-                    </Link>
-                    <Link
+                      icon={<ShoppingBag size={18} className="text-[#55A630]" />}
+                      title="Ethylene Absorber"
+                      desc="Penyerap etilen premium"
+                    />
+                    <ProductItem
                       href="/produk/kemasan-buah"
-                      className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition"
-                    >
-                      <PackageIcon className="text-[#55A630] w-5 h-5" />
-                      <div>
-                        <div className="font-medium">Kemasan Buah</div>
-                        <div className="text-sm text-gray-500 mt-1">Kemasan khusus ekspor</div>
-                      </div>
-                    </Link>
+                      icon={<PackageIcon className="text-[#55A630]" />}
+                      title="Kemasan Buah"
+                      desc="Kemasan khusus ekspor"
+                    />
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
-          <NavLink href="#features" label="Manfaat" />
-          <NavLink href="/faq" label="FAQ" />
-          <NavLink href="/kontak" label="Kontak" />
+
+          <NavLink href="#features">Manfaat</NavLink>
+          <NavLink href="/faq">FAQ</NavLink>
+          <NavLink href="/kontak">Kontak</NavLink>
         </nav>
 
-        {/* CTA Button */}
+        {/* CTA */}
         <motion.div className="hidden md:block" whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
           <Link
             href="/kontak"
@@ -124,43 +120,64 @@ export default function Navbar() {
           </Link>
         </motion.div>
 
-        {/* Mobile Menu Button */}
-        <button className="md:hidden text-gray-700 z-50" onClick={() => setOpen(!open)}>
-          {open ? <X size={28} className="text-gray-800" /> : <Menu size={28} className="text-gray-800" />}
+        {/* Mobile Toggle */}
+        <button
+          className="md:hidden text-gray-700 z-50"
+          onClick={() => setOpen(!open)}
+        >
+          {open ? <X size={28} /> : <Menu size={28} />}
         </button>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {open && (
           <motion.div
-            className="md:hidden fixed inset-0 bg-white z-40 pt-20"
+            className="md:hidden fixed inset-0 bg-white z-50 pt-20"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
           >
             <div className="px-6 py-8 space-y-6">
-              <MobileLink href="/" label="Beranda" setOpen={setOpen} />
+              <MobileLink href="/" onClick={() => setOpen(false)}>Beranda</MobileLink>
+
               <div className="border-b border-gray-100 pb-3">
                 <button
                   className="flex items-center justify-between w-full text-lg font-medium py-3"
                   onClick={() => setOpenProducts(!openProducts)}
                 >
                   <span>Produk</span>
-                  <ChevronDown size={20} className={`transition-transform ${openProducts ? 'rotate-180' : ''}`} />
+                  <ChevronDown
+                    size={20}
+                    className={`transition-transform ${openProducts ? 'rotate-180' : ''}`}
+                  />
                 </button>
-                {openProducts && (
-                  <motion.div className="pl-4 space-y-3 mt-2" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }}>
-                    <MobileLink href="/produk/ethylene-absorber" label="Ethylene Absorber" setOpen={setOpen} />
-                    <MobileLink href="/produk/kemasan-buah" label="Kemasan Buah" setOpen={setOpen} />
-                  </motion.div>
-                )}
+
+                <AnimatePresence>
+                  {openProducts && (
+                    <motion.div
+                      className="pl-4 space-y-3 mt-2"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                    >
+                      <MobileLink href="/produk/ethylene-absorber" onClick={() => setOpen(false)}>
+                        Ethylene Absorber
+                      </MobileLink>
+                      <MobileLink href="/produk/kemasan-buah" onClick={() => setOpen(false)}>
+                        Kemasan Buah
+                      </MobileLink>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
-              <MobileLink href="#features" label="Manfaat" setOpen={setOpen} />
-              <MobileLink href="/faq" label="FAQ" setOpen={setOpen} />
-              <MobileLink href="/kontak" label="Kontak" setOpen={setOpen} />
-              <motion.div className="pt-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}>
+
+              <MobileLink href="#features" onClick={() => setOpen(false)}>Manfaat</MobileLink>
+              <MobileLink href="/faq" onClick={() => setOpen(false)}>FAQ</MobileLink>
+              <MobileLink href="/kontak" onClick={() => setOpen(false)}>Kontak</MobileLink>
+
+              <motion.div className="pt-6">
                 <Link
                   href="/kontak"
                   className="flex items-center justify-center gap-2 bg-gradient-to-r from-[#55A630] to-[#8CCF42] text-white px-6 py-3 rounded-full shadow-lg"
@@ -178,10 +195,11 @@ export default function Navbar() {
   )
 }
 
-// Reusable Link Components
-const NavLink = ({ href, label }: { href: string; label: string }) => (
+/* === Komponen Reusable === */
+
+const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
   <Link href={href} className="relative group py-2">
-    <span className="group-hover:text-[#55A630] transition">{label}</span>
+    <span className="group-hover:text-[#55A630] transition">{children}</span>
     <motion.div
       className="absolute bottom-0 left-0 h-0.5 bg-[#55A630] w-0 group-hover:w-full"
       initial={{ width: 0 }}
@@ -191,13 +209,47 @@ const NavLink = ({ href, label }: { href: string; label: string }) => (
   </Link>
 )
 
-const MobileLink = ({ href, label, setOpen }: { href: string; label: string; setOpen: (v: boolean) => void }) => (
-  <Link href={href} className="block text-lg font-medium py-3 border-b border-gray-100" onClick={() => setOpen(false)}>
-    {label}
+const MobileLink = ({
+  href,
+  children,
+  onClick,
+}: {
+  href: string
+  children: React.ReactNode
+  onClick?: () => void
+}) => (
+  <Link
+    href={href}
+    className="block text-lg font-medium py-3 border-b border-gray-100"
+    onClick={onClick}
+  >
+    {children}
   </Link>
 )
 
-// Icon Komponen
+const ProductItem = ({
+  href,
+  icon,
+  title,
+  desc,
+}: {
+  href: string
+  icon: React.ReactNode
+  title: string
+  desc: string
+}) => (
+  <Link
+    href={href}
+    className="flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition"
+  >
+    {icon}
+    <div>
+      <div className="font-medium">{title}</div>
+      <div className="text-sm text-gray-500 mt-1">{desc}</div>
+    </div>
+  </Link>
+)
+
 function LeafIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
