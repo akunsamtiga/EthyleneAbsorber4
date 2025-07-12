@@ -1,132 +1,18 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
-import { useScroll, useTransform, motion } from 'framer-motion'
 import Hero from '@/components/Hero'
 import Features from '@/components/Features'
 
-interface Particle {
-  width: number
-  height: number
-  left: string
-  top: string
-  x: number
-  y: number
-  duration: number
-}
-
-interface Fruit {
-  left: string
-  top: string
-  duration: number
-  delay: number
-}
-
-function useRandomParticles(count: number) {
-  const [particles, setParticles] = useState<Particle[]>([])
-
-  useEffect(() => {
-    const generated: Particle[] = [...Array(count)].map(() => ({
-      width: Math.random() * 20 + 10,
-      height: Math.random() * 20 + 10,
-      left: `${Math.random() * 100}%`,
-      top: `${Math.random() * 100}%`,
-      x: (Math.random() - 0.5) * 50,
-      y: (Math.random() - 0.5) * 50,
-      duration: Math.random() * 10 + 5,
-    }))
-    setParticles(generated)
-  }, [count])
-
-  return particles
-}
-
-function useRandomFruits(count: number) {
-  const [fruits, setFruits] = useState<Fruit[]>([])
-
-  useEffect(() => {
-    const generated: Fruit[] = [...Array(count)].map((_, i) => ({
-      left: `${10 + i * 15}%`,
-      top: `${20 + Math.random() * 60}%`,
-      duration: 4 + Math.random() * 3,
-      delay: i * 0.5,
-    }))
-    setFruits(generated)
-  }, [count])
-
-  return fruits
-}
-
 export default function HomePage() {
-  const containerRef = useRef(null)
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end'],
-  })
-
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.03])
-  const y = useTransform(scrollYProgress, [0, 1], [0, -80])
-
-  const particles = useRandomParticles(15)
-  const fruits = useRandomFruits(5)
-
   return (
-    <motion.main
-      ref={containerRef}
-      className="bg-white text-gray-800 overflow-hidden relative"
-      style={{ scale }}
-    >
+    <main className="bg-white text-gray-800">
       <Hero />
 
-      {/* SECTION: Manfaat */}
-      <motion.section
-        id="features"
-        className="pt-10 pb-0 bg-white relative overflow-hidden"
-        style={{ y }}
-      >
-        {/* Floating particles */}
-        {particles.map((p, i) => (
-          <motion.div
-            key={`particle-${i}`}
-            className="bg-green-200/50 rounded-full absolute z-0"
-            style={{
-              width: p.width,
-              height: p.height,
-              left: p.left,
-              top: p.top,
-            }}
-            animate={{ x: p.x, y: p.y }}
-            transition={{
-              duration: p.duration,
-              repeat: Infinity,
-              repeatType: 'mirror',
-            }}
-          />
-        ))}
-
-        {/* Floating fruits */}
-        {fruits.map((f, i) => (
-          <motion.div
-            key={`fruit-${i}`}
-            className="w-4 h-4 bg-[#198754] rounded-full absolute z-0"
-            style={{
-              left: f.left,
-              top: f.top,
-            }}
-            animate={{ y: [-10, 10] }}
-            transition={{
-              duration: f.duration,
-              delay: f.delay,
-              repeat: Infinity,
-              repeatType: 'mirror',
-            }}
-          />
-        ))}
-
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <section id="features" className="pt-10 pb-0 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <Features />
         </div>
-      </motion.section>
-    </motion.main>
+      </section>
+    </main>
   )
 }
