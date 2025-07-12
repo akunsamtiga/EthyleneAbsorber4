@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 
@@ -11,4 +12,12 @@
 }
 
 body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
 }
+
+/* globals.css */
+.bg-dot-pattern {
+  background-image: radial-gradient(#003c5c 1.6px, transparent 1.6px);
+  background-size: 12px 12px;
+}
+

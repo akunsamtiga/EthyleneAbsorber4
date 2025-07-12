@@ -1,231 +1,185 @@
-'use client'
+'use client';
 
-import { motion } from 'framer-motion'
-import { Leaf, ShieldCheck, Truck, Zap, PackageCheck, Globe, BadgeCheck } from 'lucide-react'
-import { useInView } from 'react-intersection-observer'
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import {
+  Umbrella,
+  CalendarCheck,
+  ShieldCheck,
+  BadgeCheck,
+} from 'lucide-react';
 
 const features = [
   {
-    icon: Leaf,
-    title: 'Ramah Lingkungan',
-    desc: 'Formulasi biodegradable dengan teknologi nano yang terurai alami dalam 90 hari tanpa residu berbahaya.',
-    color: '#55A630',
-    delay: 0.1,
-    stats: '100% Organik'
+    title: 'Container Dry® II',
+    description: 'Desiccant untuk melindungi kontainer dari kelembaban.',
+    image: '/images/container.webp',
   },
   {
-    icon: ShieldCheck,
-    title: 'Sertifikasi BPOM',
-    desc: 'Memiliki sertifikat BPOM RI NA18191100273 dan lolos uji klinis untuk produk pangan internasional.',
-    color: '#2563EB',
-    delay: 0.2,
-    stats: '100% Aman'
+    title: 'Desi Pak®',
+    description: 'Desiccant dalam kemasan kantong untuk berbagai aplikasi.',
+    image: '/images/desi.webp',
   },
   {
-    icon: Truck,
-    title: 'Distribusi Global',
-    desc: 'Digunakan oleh 150+ eksportir di 12 negara dengan tingkat keberhasilan 98.7%.',
-    color: '#7C3AED',
-    delay: 0.3,
-    stats: '12 Negara'
+    title: 'Silica Gel',
+    description: 'Silica gel berkualitas untuk proteksi kelembaban.',
+    image: '/images/silica.webp',
   },
-  {
-    icon: Zap,
-    title: 'Efektivitas Tinggi',
-    desc: 'Mengurangi pembusukan buah hingga 72.3% berdasarkan uji coba di laboratorium independen.',
-    color: '#D97706',
-    delay: 0.4,
-    stats: '72.3% Efektif'
-  },
-  {
-    icon: PackageCheck,
-    title: 'Kemasan Eksklusif',
-    desc: 'Menggunakan teknologi barrier 7 lapis dengan indikator kesegaran digital.',
-    color: '#DC2626',
-    delay: 0.5,
-    stats: '7 Lapis Proteksi'
-  },
-  {
-    icon: Globe,
-    title: 'Standar Internasional',
-    desc: 'Memenuhi standar FDA (21 CFR 175.300), EU No 10/2011, dan Jepang JHOSPA.',
-    color: '#0891B2',
-    delay: 0.6,
-    stats: '3 Sertifikat'
-  }
-]
+];
 
-// ✅ Hapus index jika tidak digunakan
-const FeatureCard = ({ feature }: { feature: typeof features[0] }) => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-    rootMargin: '-50px 0px'
-  })
+const advantages = [
+  {
+    title: 'Menjaga dari kelembapan.',
+    description: 'Produk kami dirancang untuk menjaga produk anda dari kelembapan.',
+    icon: <Umbrella size={36} className="text-[#198754]" />,
+  },
+  {
+    title: 'Jangka waktu yang lama.',
+    description: 'Produk anda akan dijaga dari kelembapan dengan waktu yang panjang.',
+    icon: <CalendarCheck size={36} className="text-[#198754]" />,
+  },
+  {
+    title: 'Kualitas Produk.',
+    description: 'Produk kami memiliki kualitas terbaik sehingga anda tidak perlu khawatir akan produk anda.',
+    icon: <ShieldCheck size={36} className="text-[#198754]" />,
+  },
+  {
+    title: 'Ecotain Sertifikat.',
+    description: 'Produk EcoTain® secara signifikan melebihi standar pasar keberlanjutan.',
+    icon: <BadgeCheck size={36} className="text-[#198754]" />,
+  },
+];
 
+const Features = () => {
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 50 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: feature.delay, ease: [0.16, 1, 0.3, 1] }}
-      className="relative group h-full"
-      whileHover={{ y: -10 }}
-    >
-      {/* Background glow effect */}
-      <motion.div 
-        className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        style={{ backgroundColor: `${feature.color}10` }}
-        animate={inView ? { scale: [1, 1.02, 1] } : {}}
-        transition={{ duration: 6, repeat: Infinity, delay: feature.delay }}
-      />
-      
-      {/* Animated border */}
-      <motion.div 
-        className="absolute inset-0 rounded-2xl border-2 opacity-0 group-hover:opacity-100"
-        style={{ borderColor: feature.color }}
-        animate={{
-          borderWidth: [1, 2, 1],
-          opacity: [0, 0.5, 0]
-        }}
-        transition={{ duration: 2, repeat: Infinity }}
-      />
-      
-      {/* Main card */}
-      <div className="relative z-10 h-full bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 group-hover:shadow-xl transition-all duration-500">
-        <div className="p-8 pb-0">
-          <motion.div 
-            className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-6"
-            style={{ backgroundColor: `${feature.color}10` }}
-            whileHover={{ scale: 1.1, rotate: 5 }}
-            transition={{ type: 'spring', stiffness: 500, damping: 15 }}
-          >
-            <feature.icon 
-              className="text-[--color]" 
-              size={32} 
-              style={{ '--color': feature.color } as React.CSSProperties}
-            />
-          </motion.div>
-          
-          <h3 className="text-2xl font-bold mb-3 text-gray-900 line-clamp-1">
-            {feature.title}
-            <BadgeCheck 
-              className="inline-block ml-2 text-[--color]" 
-              size={20} 
-              style={{ '--color': feature.color } as React.CSSProperties}
-            />
-          </h3>
-          
-          <p className="text-gray-600 mb-6 line-clamp-3">
-            {feature.desc}
-          </p>
+    <>
+      {/* Section: Produk */}
+      <section className="w-full bg-white py-20 px-6">
+        <div className="max-w-7xl mx-auto text-center">
+          <p className="text-sm text-gray-400 font-medium mb-2">Produk</p>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800 mb-14">
+            Produk terbaik kami
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-start">
+            {features.map((item, idx) => (
+              <div
+                key={idx}
+                className="relative group flex flex-col items-center text-center"
+              >
+                <div className="w-[250px] h-[320px] relative mb-5 overflow-hidden rounded-md shadow-md transition-transform duration-500 ease-in-out transform group-hover:scale-105">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    className="object-cover transition-transform duration-700 ease-in-out"
+                  />
+                  <div className="absolute inset-0 bg-[#198754]/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out flex flex-col items-center justify-center text-white px-4 text-sm text-center backdrop-blur-sm">
+                    <h3 className="font-bold text-lg mb-1">{item.title}</h3>
+                    <p className="opacity-90">{item.description}</p>
+                  </div>
+                </div>
+                <h3 className="text-[#198754] text-sm font-bold uppercase mb-1">
+                  {item.title}
+                </h3>
+                <p className="text-gray-500 text-sm">{item.description}</p>
+              </div>
+            ))}
+          </div>
         </div>
-        
-        <div 
-          className="px-8 py-4 bg-gradient-to-r from-white to-gray-50 border-t border-gray-100"
-          style={{ borderBottomColor: `${feature.color}30` }}
-        >
-          <motion.div
-            className="text-sm font-semibold text-[--color] flex items-center"
-            style={{ '--color': feature.color } as React.CSSProperties}
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            transition={{ delay: feature.delay + 0.3 }}
-          >
-            <motion.span
-              className="inline-block w-2 h-2 rounded-full mr-2"
-              style={{ backgroundColor: feature.color }}
-              animate={{ scale: [1, 1.5, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            />
-            {feature.stats}
-          </motion.div>
+      </section>
+
+      {/* Section: Sample Produk */}
+      <section className="w-full bg-white px-6 mt-10 relative overflow-visible">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10 relative">
+          {/* Gambar Sample + Pattern */}
+          <div className="relative z-10">
+            {/* Bullet Pattern */}
+            <div className="absolute bottom-[-50px] right-[-50px] z-0 opacity-30">
+              <svg
+                width="180"
+                height="180"
+                viewBox="0 0 180 180"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g fill="#198754">
+                  {Array.from({ length: 7 }).map((_, row) =>
+                    Array.from({ length: 7 }).map((_, col) => (
+                      <circle
+                        key={`${row}-${col}`}
+                        cx={8 + col * 24}
+                        cy={8 + row * 24}
+                        r="6"
+                      />
+                    ))
+                  )}
+                </g>
+              </svg>
+            </div>
+
+            {/* Gambar Sample */}
+            <div className="rounded-xl overflow-hidden shadow-lg w-[300px] md:w-[350px] h-[280px] relative z-10">
+              <Image
+                src="/images/ps1.webp"
+                alt="Sample Produk"
+                fill
+                className="object-cover"
+              />
+            </div>
+
+            {/* Caption */}
+            <div className="absolute bottom-0 left-0 w-full bg-[#198754] text-white p-5 rounded-b-xl z-20">
+              <h3 className="text-base font-semibold mb-1">Dapatkan sample produk</h3>
+              <p className="text-sm opacity-90">Dapatkan sample produk kami untuk anda.</p>
+            </div>
+          </div>
+
+          {/* Text Kanan */}
+          <div className="text-center md:text-left max-w-xl z-10">
+            <p className="text-sm text-gray-400 font-medium mb-2">Contoh produk</p>
+            <h2 className="text-2xl md:text-3xl font-extrabold text-gray-800 mb-4">
+              Kami berikan contoh <br className="hidden md:block" />
+              produk untuk anda.
+            </h2>
+            <p className="text-gray-600 text-sm mb-6">
+              Kami memberikan contoh produk untuk anda, silahkan mengirimkan kebutuhan
+              untuk perusahaan anda di halaman hubungi kami.
+            </p>
+            <Link
+              href="/produk"
+              className="text-[#198754] font-semibold text-sm border-b border-[#198754] inline-block"
+            >
+              — Semua Produk
+            </Link>
+          </div>
         </div>
-        
-        <motion.div
-          className="h-1 w-full"
-          style={{ backgroundColor: feature.color }}
-          initial={{ scaleX: 0 }}
-          animate={inView ? { scaleX: 1 } : {}}
-          transition={{ delay: feature.delay + 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        />
-      </div>
-    </motion.div>
-  )
-}
+      </section>
 
-export default function Features() {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1
-  })
+      {/* Section: Keunggulan Kami */}
+      <section className="w-full bg-white py-20 px-6">
+        <div className="max-w-7xl mx-auto">
+          <p className="text-sm text-gray-400 font-medium mb-1">Keuntungan</p>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-[#003c5c] mb-12">
+            Jaga produk anda <br className="hidden md:block" /> dengan keunggulan kami
+          </h2>
 
-  return (
-    <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-      <div className="max-w-4xl mx-auto text-center mb-16">
-        <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="inline-block mb-4"
-        >
-          <motion.div
-            className="text-sm font-semibold text-[#55A630] bg-[#55A630]/10 px-4 py-1.5 rounded-full mb-3 inline-flex items-center"
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            transition={{ delay: 0.2 }}
-          >
-            <Zap className="mr-2" size={16} />
-            <span>Teknologi Mutakhir</span>
-          </motion.div>
-        </motion.div>
-        
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4"
-        >
-          Keunggulan <motion.span 
-            className="text-[#55A630] inline-block"
-            animate={{ textShadow: ['0 0 0px #55A630', '0 0 8px rgba(85, 166, 48, 0.5)', '0 0 0px #55A630'] }}
-            transition={{ duration: 3, repeat: Infinity }}
-          >Premium</motion.span>
-        </motion.h2>
-        
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.5 }}
-          className="text-xl text-gray-600"
-        >
-          Teknologi mutakhir yang membedakan produk kami dari yang lain
-        </motion.p>
-      </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-10">
+            {advantages.map((item, idx) => (
+              <div key={idx} className="flex flex-col items-center text-center">
+                <div className="w-20 h-20 bg-[#eafaf0] rounded-xl flex items-center justify-center mb-5 shadow-sm">
+                  {item.icon}
+                </div>
+                <h3 className="text-[#003c5c] text-base font-bold mb-2">{item.title}</h3>
+                <p className="text-gray-500 text-sm">{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </>
+  );
+};
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {features.map((feature, index) => (
-          <FeatureCard key={index} feature={feature} />
-        ))}
-      </div>
-
-      {/* Premium Badge */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={inView ? { opacity: 1, scale: 1 } : {}}
-        transition={{ delay: 0.8, type: 'spring', stiffness: 100 }}
-        className="mt-20 text-center"
-      >
-        <motion.div
-          className="inline-flex items-center bg-gradient-to-r from-[#55A630] via-[#4CAF50] to-[#8BC34A] text-white px-8 py-4 rounded-full shadow-xl"
-          animate={{ backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'] }}
-          transition={{ duration: 4, repeat: Infinity, repeatType: 'reverse' }}
-        >
-          <Zap className="mr-3 animate-pulse" size={24} />
-          <span className="text-lg font-bold tracking-wide">TECHNOLOGY OF THE YEAR 2024</span>
-        </motion.div>
-      </motion.div>
-    </div>
-  )
-}
+export default Features;
